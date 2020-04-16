@@ -25,18 +25,17 @@ app.post('/insert-data', function(req,res){
     var DOB = req.body.dob;
     var PHONE = req.body.phone;
     var EMAIL = req.body.email;
-    if(FIRSTNAME && SURNAME && AGE && DOB && PHONE && EMAIL){
-        client.query("INSERT INTO account(firstname,surname, age, dob, phone, email)  VALUES ($1, $2, $3, $4, $5, $6)",
-        [FIRSTNAME,SURNAME,AGE,DOB,PHONE,EMAIL]) ;
-        res.send('Upload Succesful...');
-        app.get('/', function(req, res) {
-            res.sendFile(path.join(__dirname + '/index.html'));
-        });
-       
-        
-    }else{
-        res.send('Upload Error!')
-    }
+
+    client.query('INSERT INTO account(firstname,surname, age, dob, phone, email)  VALUES ($1, $2, $3, $4, $5, $6)', [FIRSTNAME,SURNAME,AGE,DOB,PHONE,EMAIL], (error, results) => {
+        if (error) {
+            res.send('Wrong');
+        }
+        res.send('uploaded');
+        res.redirect('/index.html');
+
+    });
+
+
 
 });
 
