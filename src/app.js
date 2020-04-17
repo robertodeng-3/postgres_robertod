@@ -39,22 +39,28 @@ app.post('/insert-data', function(req,res){
 });
 //delete last row postgresql
 app.post('/delete-data', function(req,res){    
-    client.query('DELETE FROM account WHERE id = 2', (error, results) => {
+    client.query('DELETE FROM account WHERE id in( SELECT id FROM account ORDER BY id desc LIMIT 1)', (error, results) => {
         if (error) {
             res.send(error);
         }else{
-           // res.send(results)
-            res.send('Delete last row');
+           res.send('Delete last row');
         }        
     });
 
 });
 //display last row postgresql
 app.post('/show-data', function(req,res){
-    res.send('Show last row');
+    client.query('SELECT FROM account WHERE id in( SELECT id FROM account ORDER BY id desc LIMIT 1)', (error, results) => {
+        if (error) {
+            res.send(error);
+        }else{
+           
+        }        
+    });
+    
 
 });
-//update last row postgresql
+// last row postgresql
 app.post('/update-data', function(req,res){
     res.send('Upload last row');
 
