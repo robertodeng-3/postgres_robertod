@@ -27,7 +27,7 @@ app.post('/insert-data', function(req,res){
     var DOB = req.body.dob;
     var PHONE = req.body.phone;
     var EMAIL = req.body.email;
-
+    
     client.query('INSERT INTO account(firstname,surname, age, dob, phone, email)  VALUES ($1, $2, $3, $4, $5, $6)', 
     [FIRSTNAME,SURNAME,AGE,DOB,PHONE,EMAIL], (error, results) => {
         if (error) {
@@ -43,26 +43,26 @@ app.post('/delete-data', function(req,res){
         if (error) {
             res.send(error);
         }else{
-           res.send('Delete last row');
+            res.send('Delete last row');
         }        
     });
 
 });
 //display last row postgresql
 app.post('/show-data', function(req,res){
-    client.query('SELECT FROM account WHERE id in( SELECT id FROM account ORDER BY id desc LIMIT 1)', (error, results) => {
+    client.query('SELECT * FROM account WHERE id in( SELECT id FROM account ORDER BY id desc LIMIT 1)', (error, results) => {
         if (error) {
             res.send(error);
         }else{
-           
+           res.send(results.rows);
+                    
         }        
-    });
-    
+    });   
 
 });
-// last row postgresql
+//update last row postgresql
 app.post('/update-data', function(req,res){
-    res.send('Upload last row');
+  
 
 });
 
