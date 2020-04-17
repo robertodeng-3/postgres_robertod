@@ -1,23 +1,25 @@
+// load in modules
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const express = require('express');
 const path = require('path');
-const pg = require('pg');
+const pg = require('pg');  
 
+ // initialise database and open connection
 const connection = "postgres://testuser:password1@localhost:5432/testdb";
 const client = new pg.Client(connection);
 client.connect();
-
+//initialise express
 const app = express();
-
 
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 
+//serve up static html page index.html
 app.get('/', function(req, res) {
 	res.sendFile(path.join(__dirname + '/index.html'));
 });
-
+//load values from index.html and create insert statement and send to db accounts
 app.post('/insert-data', function(req,res){
     var FIRSTNAME = req.body.firstname;
     var SURNAME = req.body.surname;
@@ -26,16 +28,35 @@ app.post('/insert-data', function(req,res){
     var PHONE = req.body.phone;
     var EMAIL = req.body.email;
 
-    client.query('INSERT INTO account(firstname,surname, age, dob, phone, email)  VALUES ($1, $2, $3, $4, $5, $6)', [FIRSTNAME,SURNAME,AGE,DOB,PHONE,EMAIL], (error, results) => {
+    client.query('INSERT INTO account(firstname,surname, age, dob, phone, email)  VALUES ($1, $2, $3, $4, $5, $6)', 
+    [FIRSTNAME,SURNAME,AGE,DOB,PHONE,EMAIL], (error, results) => {
         if (error) {
             res.send('Wrong');
-        }
-        res.send('uploaded');
-        res.redirect('/index.html');
-
+        }else{
+            res.send('uploaded');
+        }        
+    });
+});
+//delete last row postgresql
+app.post('/delete-data', function(req,res){    
+    client.query('DELETE FROM account WHERE id = 2', (error, results) => {
+        if (error) {
+            res.send(error);
+        }else{
+           // res.send(results)
+            res.send('Delete last row');
+        }        
     });
 
+});
+//display last row postgresql
+app.post('/show-data', function(req,res){
+    res.send('Show last row');
 
+});
+//update last row postgresql
+app.post('/update-data', function(req,res){
+    res.send('Upload last row');
 
 });
 
