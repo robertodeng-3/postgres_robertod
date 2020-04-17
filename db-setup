@@ -1,0 +1,30 @@
+To set up a super user and a databes and a table from the commandline.
+
+>> Log into postgres as root user >> > psql -U postgres (password)
+
+>> Inside the postgres shell create a new user with password, it is good practice not to do 
+    development with root user >> > CREATE ROLE testuser WITH LOGIN PASSWORD 'welcome1';
+
+>> Give the user some root privileges >> > ALTER ROLE testuser super user;
+
+>> Quit >> > \q 
+
+>> Log back into postgres as test user >> > psql -d postgres -U testuser
+
+>> Create database >> > CREATE DATABASE testdb;
+
+>> Connect to the databaswe >> > testdb;
+
+>> Create a table >> > CREATE TABLE account( id serial PRIMARY KEY,firstname VARCHAR (50),surname VARCHAR (50),age VARCHAR (50),
+    dob VARCHAR (50),phone VARCHAR (50), email VARCHAR (50));
+
+>> For starting off its nice to have some data in your database so you can insert one row >> > INSERT INTO account (firstname,
+    surname, age, dob, phone, email)  VALUES ('Rupert ',' Black','23','03/11/1987','0831234567', 'rupert@test.com');
+
+>> To check the data you can run >> > Select all from account;
+
+>> Congrats you have created a user and a database and a table with some data.
+
+>> Other handy commandys are \dt >> display table ; \l >> list database; \du display users;
+
+
